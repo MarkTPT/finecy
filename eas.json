@@ -1,0 +1,42 @@
+{
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "env": {
+        "APP_VARIANT": "development",
+        "NODE_ENV": "development"
+      },
+      "channel": "development",
+      "environment": "development",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+        // "simulator": true
+      }
+    },
+    "preview": {
+      "env": {
+        "APP_VARIANT": "production",
+        "NODE_ENV": "production"
+      },
+      "channel": "preview",
+      "environment": "preview",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "environment": "production"
+    }
+  },
+  "cli": {
+    "appVersionSource": "remote"
+  }
+}
