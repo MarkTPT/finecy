@@ -3,40 +3,14 @@ import Category from '@/enums/Category';
 import { supabase } from '@/lib/supabase';
 import type { Tables } from '@/lib/types/supabase.database';
 import { useAuth } from '@/providers/AuthProvider';
-import IconSize from '@/svg/enums/IconSize';
-import CartIcon from '@/svg/icons/CartIcon';
-import FolderIcon from '@/svg/icons/FolderIcon';
-import FoodIcon from '@/svg/icons/FoodIcon';
-import HeartIcon from '@/svg/icons/HeartIcon';
-import SmileyIcon from '@/svg/icons/SmileyIcon';
-import TransportIcon from '@/svg/icons/TransportIcon';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HeadlineText from '@/components/HeadlineText';
 import { router } from 'expo-router';
-
-const capitalizeFirstLetter = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-const CategoryIcon: Record<Category, React.ReactNode> = {
-  [Category.Food]: <FoodIcon size={IconSize.MD} color="white" />,
-  [Category.Transport]: <TransportIcon size={IconSize.MD} color="white" />,
-  [Category.Other]: <FolderIcon size={IconSize.MD} color="white" />,
-  [Category.Health]: <HeartIcon size={IconSize.MD} color="white" />,
-  [Category.Shopping]: <CartIcon size={IconSize.MD} color="white" />,
-  [Category.Leisure]: <SmileyIcon size={IconSize.MD} color="white" />,
-};
-
-const CategoryColorMap: Record<Category, string> = {
-  [Category.Food]: '#B9A009',
-  [Category.Transport]: '#005CD4',
-  [Category.Other]: '#666F76',
-  [Category.Health]: '#D13241',
-  [Category.Shopping]: '#0B6E4A',
-  [Category.Leisure]: '#F4C4C9',
-};
+import CategoryIconMap from '@/constants/CategoryIconMap';
+import capitalizeFirstLetter from '@/helpers/capitalizeFirstLetter';
+import CategoryColorMap from '@/constants/CategoryColorMap';
 
 export default function DashboardPage() {
   const insets = useSafeAreaInsets();
@@ -91,7 +65,9 @@ export default function DashboardPage() {
       return {
         ...category,
         total,
-        color: CategoryColorMap[category.name as Category],
+        color:
+          CategoryColorMap[category.name as Category] ||
+          CategoryColorMap[Category.Other],
         name: capitalizeFirstLetter(category.name),
         type: category.name,
       };
@@ -136,7 +112,7 @@ export default function DashboardPage() {
                   borderRadius: '50%',
                 }}
               >
-                {CategoryIcon[category.type]}
+                {CategoryIconMap[category.type]}
               </View>
 
               <Text

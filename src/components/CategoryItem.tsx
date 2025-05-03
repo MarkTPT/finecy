@@ -7,24 +7,13 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import type { CategoryGroup } from '@/types/Invoice';
 import CategoryIconMap from '@/constants/CategoryIconMap';
 import Fonts from '@/constants/Fonts';
-
-const capitalizeFirstLetter = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-const CategoryColorMap: Record<Category, string> = {
-  [Category.Food]: '#B9A009',
-  [Category.Transport]: '#005CD4',
-  [Category.Other]: '#666F76',
-  [Category.Health]: '#D13241',
-  [Category.Shopping]: '#0B6E4A',
-  [Category.Leisure]: '#F4C4C9',
-};
+import capitalizeFirstLetter from '@/helpers/capitalizeFirstLetter';
+import CategoryColorMap from '@/constants/CategoryColorMap';
 
 export default function CategoryItem({ name, items }: CategoryGroup) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const color = CategoryColorMap[name] || '#005CD4';
+  const color = CategoryColorMap[name] || CategoryColorMap[Category.Other];
 
   return (
     <View>

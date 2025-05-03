@@ -8,12 +8,12 @@ import CartIcon from '@/svg/icons/CartIcon';
 import SmileyIcon from '@/svg/icons/SmileyIcon';
 
 const CategoryIconMap: Record<Category, React.ReactNode> = {
-  [Category.Food]: <FoodIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Transport]: <TransportIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Other]: <FolderIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Health]: <HeartIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Shopping]: <CartIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Leisure]: <SmileyIcon size={IconSize.MD} color="#D0D5DD" />,
+  [Category.Food]: <FoodIcon size={IconSize.MD} color="white" />,
+  [Category.Transport]: <TransportIcon size={IconSize.MD} color="white" />,
+  [Category.Other]: <FolderIcon size={IconSize.MD} color="white" />,
+  [Category.Health]: <HeartIcon size={IconSize.MD} color="white" />,
+  [Category.Shopping]: <CartIcon size={IconSize.MD} color="white" />,
+  [Category.Leisure]: <SmileyIcon size={IconSize.MD} color="white" />,
 };
 
 export default CategoryIconMap;
