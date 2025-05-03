@@ -23,8 +23,9 @@ export default function ProfilePage() {
         <Button
           text="Sign out"
           onPress={() => {
-            supabase.auth.signOut();
-            router.replace('/auth/sign-in');
+            supabase.auth.signOut().then(() => {
+              router.replace('/auth/sign-in');
+            });
           }}
           style={{ marginTop: 100 }}
         />

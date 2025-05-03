@@ -114,8 +114,10 @@ export default function AddInvoicePage() {
           disabled={saving}
           onPress={() => {
             if (!profile) {
-              supabase.auth.signOut();
-              router.replace('/auth/sign-in');
+              supabase.auth.signOut().then(() => {
+                router.replace('/auth/sign-in');
+              });
+
               return;
             }
 

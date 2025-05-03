@@ -23,8 +23,9 @@ export default function DashboardPage() {
     if (!profile) {
       console.error(`[DashboardPage] No profile found`);
 
-      supabase.auth.signOut();
-      router.replace('/auth/sign-in');
+      supabase.auth.signOut().then(() => {
+        router.replace('/auth/sign-in');
+      });
 
       return;
     }
