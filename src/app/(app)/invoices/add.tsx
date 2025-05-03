@@ -113,14 +113,20 @@ export default function AddInvoicePage() {
           style={styles.saveBtn}
           disabled={saving}
           onPress={() => {
-            console.log('Save invoice', invoice);
+            if (!profile) {
+              supabase.auth.signOut();
+              router.replace('/auth/sign-in');
+              return;
+            }
+
+            console.log('Saving invoice', invoice);
 
             setSaving(true);
 
             supabase
               .from('invoices')
               .insert({
-                user_id: profile?.id,
+                user_id: profile.id,
                 name: invoice.name as string,
                 note: invoice.note,
                 date_time: formatInvoiceDateAndTimeToDateObject(

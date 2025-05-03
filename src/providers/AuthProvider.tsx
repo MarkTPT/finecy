@@ -27,33 +27,24 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
   const [loading, setLoading] = useState(true);
 
-  const prepareAuthSession = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    setSession(session);
-
-    if (session) {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
-      setProfile(data);
-    }
-
-    setLoading(false);
-  };
-
   useEffect(() => {
-    prepareAuthSession();
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+        setProfile(data);
+      }
+
       setSession(session);
+
       setLoading(false);
     });
+
+    supabase.auth.getSession();
   }, []);
 
   return (

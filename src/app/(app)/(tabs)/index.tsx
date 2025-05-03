@@ -14,18 +14,19 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HeadlineText from '@/components/HeadlineText';
+import { router } from 'expo-router';
 
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 const CategoryIcon: Record<Category, React.ReactNode> = {
-  [Category.Food]: <FoodIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Transport]: <TransportIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Other]: <FolderIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Health]: <HeartIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Shopping]: <CartIcon size={IconSize.MD} color="#D0D5DD" />,
-  [Category.Leisure]: <SmileyIcon size={IconSize.MD} color="#D0D5DD" />,
+  [Category.Food]: <FoodIcon size={IconSize.MD} color="white" />,
+  [Category.Transport]: <TransportIcon size={IconSize.MD} color="white" />,
+  [Category.Other]: <FolderIcon size={IconSize.MD} color="white" />,
+  [Category.Health]: <HeartIcon size={IconSize.MD} color="white" />,
+  [Category.Shopping]: <CartIcon size={IconSize.MD} color="white" />,
+  [Category.Leisure]: <SmileyIcon size={IconSize.MD} color="white" />,
 };
 
 const CategoryColorMap: Record<Category, string> = {
@@ -45,18 +46,27 @@ export default function DashboardPage() {
   const [invoices, setInvoices] = useState<Tables<'invoices'>[]>([]);
 
   useEffect(() => {
+    if (!profile) {
+      console.error(`[DashboardPage] No profile found`);
+
+      supabase.auth.signOut();
+      router.replace('/auth/sign-in');
+
+      return;
+    }
+
     supabase
       .from('invoices')
       .select('*')
-      .filter('user_id', 'eq', profile?.id)
+      .eq('user_id', profile.id)
       .then((response) => {
         if (response.error) {
-          console.error(response.error);
+          console.error(`Error fetching invoices: ${response.error}`);
         } else {
           setInvoices(response.data);
         }
       });
-  }, [profile?.id]);
+  }, [profile]);
 
   const formattedCategories = useMemo(() => {
     const merged = invoices.reduce((acc, invoice) => {
@@ -106,9 +116,6 @@ export default function DashboardPage() {
       <View
         style={{
           flex: 1,
-
-          // backgroundColor: 'red',
-
           padding: 25,
           marginVertical: 20,
         }}
